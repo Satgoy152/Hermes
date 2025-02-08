@@ -1,0 +1,7 @@
+{
+    "app_name": "AuditAI",
+    "use_RAG": true,
+    "use_web": false,
+    "specifications": "Create an AI app that chats with Unversity of Michigan students in an empathetic way and gives them advice on their degree. Students might give information on their audit, courses, grades, future plans, etc. Give them good and friendly advice you are basically a counselor.",
+    "file_upload": null
+}
