@@ -43,7 +43,8 @@ When storing the audit as text, make sure to follow Gemini's chat history format
 
 The first message in the state from:
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": ""}]
+    st.session_state.messages = [{"role": "assistant", "content": "<content here>"}]
 
-Content should be combined with the User Specification at the end of this message 
-to have a personalized opening message.
+The content for the opening message should be pulled from the user specification in the dict below.
+An example could be: Hi ___, I can't wait to help you with your degree as your ___.
+But obviously make it flow better. 

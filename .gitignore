@@ -3,3 +3,7 @@ env
 chroma_db/
 user_input.json
 generated_app.py
+.DS_Store
+__pycache__/backend.cpython-313.pyc
+__pycache__/interaction.cpython-313.pyc
+__pycache__/backend.cpython-313.pyc
