@@ -80,6 +80,7 @@ def generate_code(user_payload):
         "  - On submission, update the conversation history with the user's message and then display the assistant's response.\n"
         "  - Ensure that the conversation memory is preserved across interactions and that the full conversation is always visible.\n"
         "  - The code should be modular, include inline comments explaining each section, adhere to PEP8 guidelines, "
+        "  - The code should talk to google gemini-2.0-flash specfically via API"   
         "and be self-contained so that it can be executed with 'streamlit run generated_app.py --server.port=8502'.\n"
         "Avoid unnecessary libraries and keep the code simple and easy to understand."
     )

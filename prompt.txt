@@ -1,1 +1,22 @@
-Generate a Streamlit app code for an AI chatbot. The UI should include a simple text entry field where users can type their queries, and the chatbot should display responses accordingly. The code should be generated based on the following user specifications (provided in JSON format) and should only use file metadata, not the full file content. Include necessary comments to explain the code logic.
+Generate a Streamlit app code for an AI chatbot. 
+The UI should include a simple text entry field where users can type their queries, and the chatbot should display responses accordingly. 
+The code should be generated based on the following user specifications (provided in JSON format) and should only use file metadata, not the full file content. 
+Include necessary comments to explain the code logic.
+# Create the model instance using Gemini Flash, including the detailed system instruction.
+    model = genai.GenerativeModel(
+        model_name="gemini-2.0-flash",
+        generation_config=generation_config,
+        system_instruction=system_instruction,
+    )
+ - Get the API Key from the .env file and configure the Gemini API key."
+    # Load environment variables from a .env file
+    load_dotenv()
+    # The GEMINI_API_KEY should be defined in your .env file.
+    api_key = os.getenv("GEMINI_API_KEY")"""
+    try:
+        response = chat_session.send_message(message)
+        return response.text
+    except Exception as e:
+        return f"# Error calling Gemini Flash API: {e}
+
+Always use gemini-2.0-flash model for the chatbot.
