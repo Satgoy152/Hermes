@@ -20,3 +20,30 @@ Include necessary comments to explain the code logic.
         return f"# Error calling Gemini Flash API: {e}
 
 Always use gemini-2.0-flash model for the chatbot.
+
+// IGNORE: this is for MVP1 Audit chatbot:
+
+The finalized chatbot should have file uploading built in the streamlit. 
+The file should be an audit from the user as their degree.
+Here is the code to copy:
+
+uploaded_file = st.file_uploader("Upload your audit:", type=["pdf", "txt"])
+
+Then convert this audit to text.
+The text conversion should be from the package import line:
+
+from pypdf import pdfreader.
+
+Then, keep the audit message in the chat session combined with any user requests but don't show it being added to the chat.
+This way, Gemini is updated on the user's audit after submission and can help the user with
+their audit more effeciently.
+
+When storing the audit as text, make sure to follow Gemini's chat history format:
+{"role": "user", "parts": [{"text": "PDF text goes here"}]}
+
+The first message in the state from:
+if "messages" not in st.session_state:
+    st.session_state.messages = [{"role": "assistant", "content": ""}]
+
+Content should be combined with the User Specification at the end of this message 
+to have a personalized opening message.

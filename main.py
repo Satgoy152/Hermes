@@ -20,14 +20,14 @@ def main():
     st.title("Hermes - AI Chatbot Code Generator")
     
     # Input field for the app name
-    app_name = st.text_input("Enter App Name:")
+    app_name = st.text_input("Enter App Name:", value="Audit AI")
     
     # Checkboxes for additional options
     use_RAG = st.checkbox("Use RAG")
     use_web = st.checkbox("Use web")
     
     # A large text area for the user to enter additional specifications
-    specifications = st.text_area("Enter Specifications for your Chatbot:")
+    specifications = st.text_area("Enter Specifications for your Chatbot:", value="Create an AI app that chats with Unversity of Michigan students in an empathetic way and gives them advice on their degree. Students might give information on their audit, courses, grades, future plans, etc. Give them good and friendly advice you are basically a counselor.")
     
     # File uploader (only metadata is used, not the entire file content)
     uploaded_file = st.file_uploader("Upload a file (for metadata only):", type=["txt", "py", "md"])

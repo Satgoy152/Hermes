@@ -1,3 +1,5 @@
 .env
 env
 chroma_db/
+user_input.json
+generated_app.py
