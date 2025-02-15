@@ -19,14 +19,7 @@ def load_prompt():
         return prompt
     except Exception as e:
         # If reading the file fails, return a default prompt.
-        return (
-            "Generate a Streamlit app code for an AI chatbot. The UI must include a header, "
-            "a full conversational interface that shows past messages, a text input field for new user queries, "
-            "and a submit mechanism. The generated code should be modular, well-commented, adhere to PEP8 standards, "
-            "and be self-contained. For example, use st.title('Chatbot Interface') for the header, "
-            "use st.session_state to store conversation history, and implement a chat UI using st.chat_message or st.write "
-            "to alternate between user and assistant messages. Do not include unnecessary libraries."
-        )
+        print(f"Error loading prompt instructions: {e}")
 
 def generate_code(user_payload):
     """
