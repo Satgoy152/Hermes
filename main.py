@@ -15,28 +15,45 @@ def get_file_metadata(uploaded_file):
         }
     return None
 
+# streamlit dialog for confused button
+@st.dialog("Confused?")
+def help_user():
+    st.write("If you are wondering what your degree progress is looking like, want recommendations based on the classes your are taking, confused on how to match courses with future career goals, and/or just have basic academic advising questions, why wait weeks for advising meetings when you can just spin up your own personalized advisor with all your information?")
+    st.write("You can specify some key elements for your advisor chatbot, then upload your audit or transcript during conversation to get personalized recommendations.")
+    st.write("Your chatbot will also be trained on UMich course material and catalog to help you in the best way possible!")
+
 def main():
     # Set the page title
-    st.title("Hermes - AI Chatbot Code Generator")
+    st.title("UMich Personalized Advisor")
+
+    # text for info
+    st.text("Create the perfect assistant to help you select classes, stay on track to graduate, and aid you in your career goals. Your advisor will be trained on updated UMich courses, required advisory materials, and more!")
+
+    
+    if "Confused?" not in st.session_state:
+        if st.button("Confused? Click me!"):
+            help_user()
+        
+        
     
     # Input field for the app name
     # app_name = st.text_input("Enter App Name:")
-    app_name = st.text_input("Enter the name of your chatbot:")
+    app_name = st.text_input("Enter your chatbot's name:", placeholder="My AI Advisor")
 
-    user_name = st.text_input("What's your name:", key="user_name_input")
+    user_name = st.text_input("What's your name:", key="user_name_input", placeholder="Satyam Goyal")
     
     # Checkboxes for additional options
     # use_RAG = st.checkbox("Use RAG")
     # use_web = st.checkbox("Use web")
-    user_major = st.text_input("Enter your major:", key="user_major_input")
+    user_major = st.text_input("Enter your major:", key="user_major_input", placeholder="Computer Science")
 
     # Step 1: Choose chatbot type
     chatbot_type = st.multiselect("What type of chatbot would you like?", 
-                              ["Career Advice", "Personal Advisor", "Class Advice"])
+                              ["Career Advice", "Personal Advisor", "Class Advice"], placeholder="Select none, one, or multiple options")
 
 
     # for graduaction year
-    user_graduation = st.text_input("Enter your graduaction date:", key="user_graduation_input")
+    user_graduation = st.text_input("Enter your graduation semester and year:", key="user_graduation_input", placeholder="Winter 2025")
     
     # A large text area for the user to enter additional specifications
     # specifications = st.text_area("Enter Specifications for your Chatbot:")
@@ -46,17 +63,20 @@ def main():
     
     #tried to make this more User Friendly for clarify of what kind of metadata is extracted
     # File uploader with help text
-    uploaded_file = st.file_uploader("Upload a file (Optional)", type=["txt", "py", "md"], help="Only extracts metadata, not file content")
+    # REMOVING FILE UPLOAD FOO MPV1 TESTS --------------------------------------------------------------------------------------------------------
+    # uploaded_file = st.file_uploader("Upload a file (Optional)", type=["txt", "py", "md"], help="Only extracts metadata, not file content")
 
-    # Check if a file is uploaded before extracting metadata
-    if uploaded_file is not None:
-        file_metadata = get_file_metadata(uploaded_file)
-        st.write("File Metadata Extracted:", file_metadata)
-    else:
-        file_metadata = None  # If no file is uploaded, set it to None or handle it appropriately
+    # # Check if a file is uploaded before extracting metadata
+    # if uploaded_file is not None:
+    #     file_metadata = get_file_metadata(uploaded_file)
+    #     st.write("File Metadata Extracted:", file_metadata)
+    # else:
+    #     file_metadata = None  # If no file is uploaded, set it to None or handle it appropriately
+    # ---------------------------------------------------------------------------------------------------------------------------------------------
+    file_metadata = None
     
     # When the user clicks submit, process the inputs
-    if st.button("Submit", key="submit_button"):
+    if st.button("Generate", key="submit_button"):
         # Build a JSON payload with the user inputs
 
         #making RAG and WEB false for now

@@ -18,6 +18,10 @@ import os
 import tempfile
 from pypdf import PdfReader
 from interaction import get_context_from_vector_db
+from dotenv import load_dotenv
+
+# load environment
+load_dotenv()
 
 # Configure page
 st.set_page_config(
