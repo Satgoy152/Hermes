@@ -14,7 +14,7 @@ def load_prompt():
     These instructions tell the LLM how to generate the chatbot code.
     """
     try:
-        with open("prompt.txt", "r") as file:
+        with open("prompt3.txt", "r") as file:
             prompt = file.read()
         return prompt
     except Exception as e:
@@ -63,7 +63,7 @@ def generate_code(user_payload):
     # - Be self-contained so that when saved (e.g., as generated_app.py) and run with
     #   'streamlit run generated_app.py --server.port=8502', it launches the full chatbot interface.
     system_instruction = (
-        "You are tasked with generating Python code for a Streamlit application that implements a full conversational chatbot interface. "
+        "You are tasked with generating code that implements a full conversational chatbot interface. "
         "The app should:\n"
         "  - Display a header using st.title('Chatbot Interface').\n"
         "  - Initialize conversation memory using st.session_state (for example, st.session_state.messages) with a default welcome message.\n"
@@ -137,22 +137,22 @@ def run_generated_app(generated_code, filename="generated_app.py", port=8502):
         return f"Error launching generated app: {e}"
 
 # Example usage:
-if __name__ == "__main__":
-    # For demonstration, we assume a sample user payload.
-    user_payload = {
-        "app_name": "Chatbot Interface",
-        "use_RAG": False,
-        "use_web": False,
-        "specifications": "Full conversational UI with chat history for chatbot interaction.",
-        "file_upload": None
-    }
+# if __name__ == "__main__":
+#     # For demonstration, we assume a sample user payload.
+#     user_payload = {
+#         "app_name": "Chatbot Interface",
+#         "use_RAG": False,
+#         "use_web": False,
+#         "specifications": "Full conversational UI with chat history for chatbot interaction.",
+#         "file_upload": None
+#     }
     
-    # Generate the code using Gemini Flash.
-    generated_code = generate_code(user_payload)
+#     # Generate the code using Gemini Flash.
+#     generated_code = generate_code(user_payload)
     
-    # Optionally, print the generated code.
-    print("Generated Code:\n", generated_code)
+#     # Optionally, print the generated code.
+#     print("Generated Code:\n", generated_code)
     
-    # Run the generated code as a separate Streamlit app.
-    app_url = run_generated_app(generated_code)
-    print(f"The generated app is running at: {app_url}")
+#     # Run the generated code as a separate Streamlit app.
+#     app_url = run_generated_app(generated_code)
+#     print(f"The generated app is running at: {app_url}")

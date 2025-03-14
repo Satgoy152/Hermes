@@ -62,6 +62,21 @@ def main():
         use_RAG = False
         use_web = False
 
+        # payload = {
+        #     "app_name": app_name,
+        #     "user_name": user_name,
+        #     "user_major": user_major,
+        #     "user_graduation": user_graduation,
+        #     "chatbot_type": chatbot_type,
+        #     "use_RAG": use_RAG,
+        #     "use_web": use_web,
+        #     "specifications": """Create an AI app that chats with University of Michigan students 
+        #     in an empathetic way and gives them advice on their degree. Students might give information 
+        #     on their audit, courses, grades, future plans, etc. Give them good and friendly advice, 
+        #     you are basically a counselor.""",
+        #     "file_upload": file_metadata
+        # }
+
         payload = {
             "app_name": app_name,
             "user_name": user_name,
