@@ -31,7 +31,9 @@ def main():
     user_major = st.text_input("Enter your major:", key="user_major_input")
 
     # Step 1: Choose chatbot type
-    chatbot_type = st.radio("What type of chatbot would you like?", ("Career Advice", "Personal Advisor", "Class Advice"))
+    chatbot_type = st.multiselect("What type of chatbot would you like?", 
+                              ["Career Advice", "Personal Advisor", "Class Advice"])
+
 
     # for graduaction year
     user_graduation = st.text_input("Enter your graduaction date:", key="user_graduation_input")
@@ -61,6 +63,21 @@ def main():
         use_RAG = False
         use_web = False
 
+        # payload = {
+        #     "app_name": app_name,
+        #     "user_name": user_name,
+        #     "user_major": user_major,
+        #     "user_graduation": user_graduation,
+        #     "chatbot_type": chatbot_type,
+        #     "use_RAG": use_RAG,
+        #     "use_web": use_web,
+        #     "specifications": """Create an AI app that chats with University of Michigan students 
+        #     in an empathetic way and gives them advice on their degree. Students might give information 
+        #     on their audit, courses, grades, future plans, etc. Give them good and friendly advice, 
+        #     you are basically a counselor.""",
+        #     "file_upload": file_metadata
+        # }
+        
         payload = {
             "app_name": app_name,
             "user_name": user_name,

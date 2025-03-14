@@ -1,7 +1,14 @@
 {
     "app_name": "AuditAI",
-    "use_RAG": true,
+    "user_name": "Satyam",
+    "user_major": "CS",
+    "user_graduation": "2025",
+    "chatbot_type": [
+        "Personal Advisor",
+        "Career Advice"
+    ],
+    "use_RAG": false,
     "use_web": false,
-    "specifications": "Create an AI app that chats with Unversity of Michigan students in an empathetic way and gives them advice on their degree. Students might give information on their audit, courses, grades, future plans, etc. Give them good and friendly advice you are basically a counselor.",
+    "specifications": "Create an AI app that chats with University of Michigan students \n            in an empathetic way and gives them advice on their degree. Students might give information \n            on their audit, courses, grades, future plans, etc. Give them good and friendly advice, \n            you are basically a counselor.",
     "file_upload": null
 }

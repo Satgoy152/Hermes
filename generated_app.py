@@ -1,97 +1,177 @@
+# Import necessary libraries
 import streamlit as st
-import os
-from dotenv import load_dotenv
 import google.generativeai as genai
+import os
+import tempfile
+from pypdf import PdfReader
+#from interaction import get_context_from_vector_db #Not using RAG
 
-# Load environment variables from a .env file
-load_dotenv()
-
-# The GEMINI_API_KEY should be defined in your .env file.
-api_key = os.getenv("GEMINI_API_KEY")
-
-# Configure the Gemini API key
-if api_key:
-    genai.configure(api_key=api_key)
-else:
-    st.error("GEMINI_API_KEY not found. Please set it in your .env file.")
-    st.stop()
-
-# Define the system instruction to guide the chatbot's behavior
-system_instruction = """
-You are AuditAI, an empathetic and helpful AI assistant designed to advise University of Michigan students on their academic journeys. 
-Students will provide information about their academic audit, courses, grades, future plans, and related topics.
-Your role is to offer friendly, supportive, and insightful advice, acting as a virtual academic counselor. 
-Maintain a positive and encouraging tone, focusing on the student's well-being and academic success.
-
-Specifically, when interacting with students:
-- Demonstrate empathy and understanding.
-- Offer constructive advice based on the information they provide.
-- Help them explore different academic options and potential career paths.
-- Offer strategies for improving their grades or managing their workload.
-- Be mindful of their emotional state and offer appropriate encouragement.
-
-Do not provide answers for other questions unrelated to being a counselor to University of Michigan students.
-"""
-
-
-# Model configuration
-generation_config = genai.types.GenerationConfig(
-    candidate_count=1,
-    max_output_tokens=2048,
+# Configure page
+st.set_page_config(
+    page_title="AuditAI",
+    layout="wide"
 )
 
-# Initialize the Gemini Flash model with system instructions
-try:
-    model = genai.GenerativeModel(
-        model_name="gemini-2.0-flash",
-        generation_config=generation_config,
-        system_instruction=system_instruction,
-    )
-except Exception as e:
-    st.error(f"Error initializing Gemini Flash model: {e}")
-    st.stop()
+# Initialize Gemini API
+# Replace API_KEY with actual implementation for environment variables
+api_key = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=api_key)
+
+# Configure the generation parameters
+generation_config = {
+    "temperature": 0.9,
+    "top_p": 0.95,
+    "top_k": 40,
+    "max_output_tokens": 8192,
+}
+
+# Create a system instruction based on user preferences
+system_instruction = """
+You are an academic advisor assistant for University of Michigan students specializing in CS programs.
+Your name is AuditAI and you're speaking with Satyam who is set to graduate in 2025.
+You provide Personal Advisor and Career Advice in an empathetic and supportive manner.
+
+When responding to the student:
+1. Reference information from their academic transcript when relevant
+2. Provide specific, actionable advice related to their major and graduation timeline
+3. Be encouraging and supportive, focusing on solutions rather than problems
+4. Consider University of Michigan's specific academic policies and requirements
+5. If you don't know something, be honest and suggest they speak with a human advisor
+
+Maintain a friendly, helpful tone throughout the conversation.
+"""
+
+# Initialize Gemini model
+model = genai.GenerativeModel(
+    model_name="gemini-2.0-flash",
+    generation_config=generation_config,
+    system_instruction=system_instruction
+)
 
 # Initialize chat session
-chat_session = model.start_chat(history=[])
+def create_chat_session():
+    return model.start_chat(history=[])
 
-# Streamlit app
-st.title("AuditAI - University of Michigan Student Advisor")
-
-# Initialize conversation history in session state
+# Initialize session state
 if "messages" not in st.session_state:
-    st.session_state.messages = [
-        {
-            "role": "assistant",
-            "content": "Hello! I'm AuditAI, your academic advisor. How can I help you today?",
-        }
-    ]
+    st.session_state.messages = [{"role": "assistant", "content": "Hi Satyam! I'm AuditAI, your academic advisor assistant for CS at the University of Michigan. I'd be happy to help you with your academic journey towards your 2025 graduation. Feel free to upload your transcript or ask me any questions about your courses, grades, or academic plans!"}]
 
-# Display the conversation history
+if "chat_session" not in st.session_state:
+    st.session_state.chat_session = create_chat_session()
+
+if "transcript_text" not in st.session_state:
+    st.session_state.transcript_text = None
+
+# Function to extract text from PDF transcript
+def extract_text_from_pdf(pdf_file):
+    try:
+        reader = PdfReader(pdf_file)
+        text = ""
+        for page in reader.pages:
+            text += page.extract_text()
+        return text
+    except Exception as e:
+        st.error(f"Error processing PDF: {e}")
+        return None
+
+# Function to get relevant context from vector database (NOT USED)
+def get_relevant_context(query):
+    # try:
+    #     context = get_context_from_vector_db(query)
+    #     return context
+    # except Exception as e:
+    #     st.error(f"Error retrieving context: {e}")
+    #     return ""
+    return ""
+
+# Function to process transcript and extract key information
+def process_transcript(transcript_text):
+    # This function would parse the transcript text and extract
+    # courses, grades, GPA, etc. For now, we'll just return the raw text
+    # In a production version, this should be enhanced with more robust parsing
+    return transcript_text
+
+# Function to generate response using Gemini
+def generate_response(prompt, transcript_info=None):
+    try:
+        # Get relevant context from vector database
+        context = get_relevant_context(prompt)
+        
+        # Construct full prompt with context and transcript info
+        full_prompt = prompt
+        
+        if context:
+            full_prompt += f"\n\nRelevant academic information: {context}"
+            
+        if transcript_info:
+            full_prompt += f"\n\nFrom student's transcript: {transcript_info}"
+        
+        # Get response from Gemini
+        response = st.session_state.chat_session.send_message(full_prompt)
+        return response.text
+    except Exception as e:
+        return f"I'm having trouble generating a response right now. Error: {e}"
+
+# Main app layout
+st.title("AuditAI")
+st.markdown("### Your University of Michigan Academic Advisor Assistant")
+
+# Sidebar for transcript upload
+with st.sidebar:
+    st.header("Upload Your Transcript")
+    uploaded_file = st.file_uploader("Upload your academic transcript (PDF)", type="pdf")
+    
+    if uploaded_file:
+        with st.spinner("Processing transcript..."):
+            # Save uploaded file to a temporary file
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
+                tmp_file.write(uploaded_file.getvalue())
+                tmp_file_path = tmp_file.name
+            
+            # Extract text from PDF
+            transcript_text = extract_text_from_pdf(uploaded_file)
+            
+            if transcript_text:
+                # Process transcript text to extract information
+                st.session_state.transcript_text = process_transcript(transcript_text)
+                st.success("Transcript uploaded and processed successfully!")
+                
+                # Display a sample of the extracted text
+                st.markdown("### Transcript Preview")
+                st.markdown(transcript_text[:500] + "..." if len(transcript_text) > 500 else transcript_text)
+            else:
+                st.error("Failed to extract text from the transcript. Please ensure it's a valid PDF.")
+
+# Display chat messages
+st.markdown("### Chat")
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+        st.write(message["content"])
 
-
-# Get user input
-user_query = st.chat_input("Enter your query")
-
-# Process user input
-if user_query:
-    # Add user message to the state
-    st.session_state.messages.append({"role": "user", "content": user_query})
+# Chat input
+if prompt := st.chat_input("Ask a question about your academic journey..."):
+    # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    
+    # Display user message
     with st.chat_message("user"):
-        st.markdown(user_query)
+        st.write(prompt)
+    
+    # Generate response
+    with st.spinner("Thinking..."):
+        transcript_info = st.session_state.transcript_text if st.session_state.transcript_text else None
+        response = generate_response(prompt, transcript_info)
+        
+        # Add assistant response to chat history
+        st.session_state.messages.append({"role": "assistant", "content": response})
+        
+        # Display assistant response
+        with st.chat_message("assistant"):
+            st.write(response)
 
-    # Get response from Gemini Flash API
-    try:
-        response = chat_session.send_message(user_query)
-        assistant_response = response.text
-    except Exception as e:
-        assistant_response = f"Error calling Gemini Flash API: {e}"
-
-    # Add assistant response to the state
-    st.session_state.messages.append(
-        {"role": "assistant", "content": assistant_response}
-    )
-    with st.chat_message("assistant"):
-        st.markdown(assistant_response)
+# Add footer with usage instructions
+st.markdown("---")
+st.markdown("#### How to use this advisor:")
+st.markdown("1. Upload your academic transcript (PDF) using the sidebar")
+st.markdown("2. Ask questions about your courses, grades, degree requirements, or future plans")
+st.markdown("3. Get personalized advice based on your academic history and goals")
