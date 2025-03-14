@@ -34,6 +34,7 @@ def main():
     chatbot_type = st.multiselect("What type of chatbot would you like?", 
                               ["Career Advice", "Personal Advisor", "Class Advice"])
 
+
     # for graduaction year
     user_graduation = st.text_input("Enter your graduaction date:", key="user_graduation_input")
     
@@ -76,7 +77,7 @@ def main():
         #     you are basically a counselor.""",
         #     "file_upload": file_metadata
         # }
-
+        
         payload = {
             "app_name": app_name,
             "user_name": user_name,
