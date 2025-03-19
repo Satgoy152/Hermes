@@ -4,7 +4,7 @@ import google.generativeai as genai
 import os
 import tempfile
 from pypdf import PdfReader
-#from interaction import get_context_from_vector_db #Not using RAG
+#from interaction import get_context_from_vector_db
 
 # Configure page
 st.set_page_config(
@@ -29,7 +29,7 @@ generation_config = {
 system_instruction = """
 You are an academic advisor assistant for University of Michigan students specializing in CS programs.
 Your name is AuditAI and you're speaking with Satyam who is set to graduate in 2025.
-You provide Personal Advisor and Career Advice in an empathetic and supportive manner.
+You provide Career Advice and Class Advice in an empathetic and supportive manner.
 
 When responding to the student:
 1. Reference information from their academic transcript when relevant
@@ -74,14 +74,9 @@ def extract_text_from_pdf(pdf_file):
         st.error(f"Error processing PDF: {e}")
         return None
 
-# Function to get relevant context from vector database (NOT USED)
+# Function to get relevant context from vector database
 def get_relevant_context(query):
-    # try:
-    #     context = get_context_from_vector_db(query)
-    #     return context
-    # except Exception as e:
-    #     st.error(f"Error retrieving context: {e}")
-    #     return ""
+    #Since RAG and WEB browsing are set to False, returning empty string
     return ""
 
 # Function to process transcript and extract key information

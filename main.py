@@ -46,14 +46,14 @@ def main():
     
     #tried to make this more User Friendly for clarify of what kind of metadata is extracted
     # File uploader with help text
-    uploaded_file = st.file_uploader("Upload a file (Optional)", type=["txt", "py", "md"], help="Only extracts metadata, not file content")
+    # uploaded_file = st.file_uploader("Upload a file (Optional)", type=["txt", "py", "md"], help="Only extracts metadata, not file content")
 
     # Check if a file is uploaded before extracting metadata
-    if uploaded_file is not None:
-        file_metadata = get_file_metadata(uploaded_file)
-        st.write("File Metadata Extracted:", file_metadata)
-    else:
-        file_metadata = None  # If no file is uploaded, set it to None or handle it appropriately
+    # if uploaded_file is not None:
+    #     file_metadata = get_file_metadata(uploaded_file)
+    #     st.write("File Metadata Extracted:", file_metadata)
+    # else:
+    #     file_metadata = None  # If no file is uploaded, set it to None or handle it appropriately
     
     # When the user clicks submit, process the inputs
     if st.button("Submit", key="submit_button"):
@@ -89,8 +89,8 @@ def main():
             "specifications": """Create an AI app that chats with University of Michigan students 
             in an empathetic way and gives them advice on their degree. Students might give information 
             on their audit, courses, grades, future plans, etc. Give them good and friendly advice, 
-            you are basically a counselor.""",
-            "file_upload": file_metadata
+            you are basically a counselor."""
+            # "file_upload": file_metadata
         }
         
         # Optionally, save the JSON locally for record keeping or further processing
