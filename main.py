@@ -118,8 +118,8 @@ def main():
             json.dump(payload, f, indent=4)
         
         # Display the submitted data on the page
-        st.write("Submitted Data:")
-        st.json(payload)
+        # st.write("Submitted Data:")
+        # st.json(payload)
         
         # Call the backend function to generate the code via the LLM API (Google Gemeni)
         # generated_code = generate_code(payload)
@@ -129,9 +129,9 @@ def main():
         
         # Display the generated code in a code block
         st.subheader("Generated Code:")
-        st.code(generated_code, language='python')
+        # st.code(generated_code, language='python')
         # Added a downlaod button
-        st.download_button("Download Code", generated_code, file_name="chatbot.py")
+        # st.download_button("Download Code", generated_code, file_name="chatbot.py")
 
         # Save and run the generated app, then display its URL for interaction
         app_url = run_generated_app(generated_code)
