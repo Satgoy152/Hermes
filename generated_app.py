@@ -4,7 +4,7 @@ import google.generativeai as genai
 import os
 import tempfile
 from pypdf import PdfReader
-#from interaction import get_context_from_vector_db # Removed since use_RAG is False
+from interaction import get_context_from_vector_db
 from dotenv import load_dotenv
 import time
 
@@ -32,9 +32,9 @@ generation_config = {
 
 # Create a system instruction based on user preferences
 system_instruction = """
-You are an academic advisor assistant for University of Michigan students specializing in CS programs.
+You are an academic advisor assistant for University of Michigan students specializing in Computer Science programs.
 Your name is AuditAI and you're speaking with Satyam who is set to graduate in Winter 2025.
-You provide Personal Advisor and Class Advice in an empathetic and supportive manner.
+You provide Career Advice and Class Advice in an empathetic and supportive manner.
 
 When responding to the student:
 1. Reference information from their academic transcript when relevant
@@ -43,7 +43,7 @@ When responding to the student:
 4. Consider University of Michigan's specific academic policies and requirements
 5. If you don't know something, be honest and suggest they speak with a human advisor
 
-Maintain a friendly, helpful tone throughout the conversation. You are basically a counselor.
+Maintain a friendly, helpful tone throughout the conversation.
 """
 
 # Initialize Gemini model
@@ -59,7 +59,7 @@ def create_chat_session():
 
 # Initialize session state
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Hi Satyam! I'm AuditAI, your academic advisor assistant for CS at the University of Michigan. I'd be happy to help you with your academic journey towards your Winter 2025 graduation. Feel free to upload your transcript or ask me any questions about your courses, grades, or academic plans!"}]
+    st.session_state.messages = [{"role": "assistant", "content": "Hi Satyam! I'm AuditAI, your academic advisor assistant for Computer Science at the University of Michigan. I'd be happy to help you with your academic journey towards your Winter 2025 graduation. Feel free to upload your transcript or ask me any questions about your courses, grades, or academic plans!"}]
 
 if "chat_session" not in st.session_state:
     st.session_state.chat_session = create_chat_session()
@@ -81,13 +81,12 @@ def extract_text_from_pdf(pdf_file):
 
 # Function to get relevant context from vector database
 def get_relevant_context(query):
-    return "" # Removed since use_RAG is False
-    #try:
-    #    context = get_context_from_vector_db(query)
-    #    return context
-    #except Exception as e:
-    #    st.error(f"Error retrieving context: {e}")
-    #    return ""
+    try:
+        context = get_context_from_vector_db(query)
+        return context
+    except Exception as e:
+        st.error(f"Error retrieving context: {e}")
+        return ""
 
 # Function to process transcript and extract key information
 def process_transcript(transcript_text):
@@ -169,9 +168,8 @@ if prompt := st.chat_input("Ask a question about your academic journey..."):
         
         # Display assistant response
         with st.chat_message("assistant"):
-            smessage_placeholder = st.empty()
+            message_placeholder = st.empty()
             full_response = ''
-            assistant_response = response
             # Streams in a chunk at a time
             for chunk in response:
                 # Simulate stream of chunk
@@ -181,20 +179,15 @@ if prompt := st.chat_input("Ask a question about your academic journey..."):
                         full_response += ch + ' '
                         time.sleep(0.05)
                         # Rewrites with a cursor at end
-                        smessage_placeholder.write(full_response + '▌')
+                        message_placeholder.write(full_response + '▌')
                 except AttributeError:
-                    st.write("An error occurred while processing the response.")
-                    break
-
+                    print("Skipping chunk due to missing text attribute.")
             # Write full message with placeholder
-            smessage_placeholder.write(full_response)
+            message_placeholder.write(full_response)
 
          
         # Add assistant response to chat history
-        try:
-            st.session_state.messages.append({"role": "assistant", "content": response.text})
-        except AttributeError:
-            st.session_state.messages.append({"role": "assistant", "content": "I encountered an issue generating the full response."})
+        st.session_state.messages.append({"role": "assistant", "content": full_response})
        
 
 # Add footer with usage instructions
