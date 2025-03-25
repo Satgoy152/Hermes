@@ -1,10 +1,9 @@
 {
-    "app_name": "AuditAI",
-    "user_name": "Satyam",
-    "user_major": "CS",
-    "user_graduation": "Winter 2025",
+    "app_name": "larrry",
+    "user_name": "neeyam",
+    "user_major": "computer science",
+    "user_graduation": "December 2025",
     "chatbot_type": [
-        "Personal Advisor",
         "Class Advice"
     ],
     "use_RAG": false,
