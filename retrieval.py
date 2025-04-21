@@ -5,9 +5,7 @@ import chromadb
 import streamlit as st
 
 
-# load VoyageAI key
-load_dotenv()
-        
+# load VoyageAI key        
 class Retriever:
     def __init__(self, model: str = "voyage-2") -> None:
         new_client = chromadb.PersistentClient(path = "./chroma_db", tenant = DEFAULT_TENANT, database = DEFAULT_DATABASE, settings = Settings())
