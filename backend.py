@@ -2,11 +2,12 @@ import os
 import subprocess
 from dotenv import load_dotenv
 import google.generativeai as genai
+import streamlit as st
 
 # Load environment variables from a .env file
 load_dotenv()
 # The GEMINI_API_KEY should be defined in your .env file.
-api_key = os.getenv("GEMINI_API_KEY")
+api_key = st.secrets["GEMINI_API_KEY"]
 
 def load_prompt():
     """

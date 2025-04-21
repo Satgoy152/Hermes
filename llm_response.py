@@ -30,9 +30,6 @@ class CounselorBot:
 
         print("Starting Bot -----------------------------------###")
 
-        # os.environ["LANGCHAIN_TRACING_V2"] = "true"
-        # os.environ["LANGCHAIN_ENDPOINT"] = "https://api.smith.langchain.com"
-        # os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
 
         client = Client()
 
@@ -51,8 +48,8 @@ class CounselorBot:
         # genai.configure(api_key=GEMINI_API_KEY)
 
         # use LangChain's wrapper for Gemini
-        llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash-preview-04-17", google_api_key=GEMINI_API_KEY, temperature=0.5)
-        summary_llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash-preview-04-17", google_api_key=GEMINI_API_KEY, temperature=0.5)
+        llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash-preview-04-17", google_api_key=st.secrets["GEMINI_API_KEY"], temperature=0.5)
+        summary_llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash-preview-04-17", google_api_key=st.secrets["GEMINI_API_KEY"], temperature=0.5)
         # response = gemini_llm.generate_content("Write a poem about AI.")
         # print(response.text)
 
