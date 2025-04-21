@@ -1,13 +1,10 @@
 import streamlit as st
 import json
 from backend import generate_code, run_generated_app  # Import the backend function to call the LLM API
-from archived.generated_app import app_page
 import google.generativeai as genai
 import os
 from pypdf import PdfReader
-from dotenv import load_dotenv
 import tempfile
-from archived.interaction import get_context_from_vector_db
 import time
 from llm_response import CounselorBot
 

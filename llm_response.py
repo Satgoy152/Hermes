@@ -2,21 +2,15 @@ import sys
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain_core.output_parsers import StrOutputParser
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain.chains import create_history_aware_retriever
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-import os
-import asyncio
-from typing import AsyncGenerator
 from langsmith import Client 
 import streamlit as st
 from retrieval import Retriever
-import google.generativeai as genai
-from dotenv import load_dotenv, get_key
 
 
 
@@ -41,9 +35,6 @@ class CounselorBot:
         # dummy_retriever = retriever.retriever_dummy
 
         print("Initializing LLM")
-        
-        load_dotenv()
-        GEMINI_API_KEY = get_key(dotenv_path=".env", key_to_get="GEMINI_API_KEY")
 
         # genai.configure(api_key=GEMINI_API_KEY)
 

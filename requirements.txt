@@ -160,6 +160,7 @@ PyPika==0.48.9
 pyproject_hooks==1.1.0
 pysqlite3-binary
 google-generativeai==0.8.4
+google-genai==1.0.0
 python-dateutil==2.9.0
 python-dotenv==1.0.1
 python-iso639==2024.4.27
