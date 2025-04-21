@@ -24,7 +24,7 @@ cffi==1.16.0
 chardet==5.2.0
 charset-normalizer==3.3.2
 chroma-hnswlib==0.7.6
-chromadb==0.6.3
+chromadb
 click==8.1.7
 coloredlogs==15.0.1
 comm==0.2.2
@@ -82,7 +82,7 @@ jupyter_core==5.7.2
 kubernetes==30.1.0
 langchain==0.2.11
 langchain-anthropic==0.1.21
-langchain-chroma==0.2.2
+langchain-chroma
 langchain-community==0.2.10
 langchain-core
 langchain-postgres==0.0.9
