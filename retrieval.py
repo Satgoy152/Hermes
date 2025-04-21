@@ -2,7 +2,6 @@ from langchain_chroma import Chroma
 from langchain_voyageai import VoyageAIEmbeddings
 from chromadb.config import DEFAULT_TENANT, DEFAULT_DATABASE, Settings
 import chromadb
-from dotenv import load_dotenv, get_key
 import streamlit as st
 
 
