@@ -84,8 +84,7 @@ langchain==0.2.11
 langchain-anthropic==0.1.21
 langchain-chroma==0.1.2
 langchain-community==0.2.10
-langchain-core==0.2.24
-langchain-openai==0.1.19
+langchain-core
 langchain-postgres==0.0.9
 langchain-text-splitters==0.2.2
 langchain-google-genai
@@ -160,7 +159,7 @@ pypdfium2==4.30.0
 PyPika==0.48.9
 pyproject_hooks==1.1.0
 pysqlite3-binary
-google-generativeai==0.8.4
+google-generativeai
 python-dateutil==2.9.0
 python-dotenv==1.0.1
 python-iso639==2024.4.27
