@@ -5,7 +5,6 @@ from langchain.vectorstores import Chroma
 from langchain_voyageai import VoyageAIEmbeddings
 
 
-
 def get_context_from_vector_db(query: str, use_mmr: bool = False) -> str:
     """
     Given a user query, retrieve relevant document chunks from the vector DB.
@@ -44,7 +43,7 @@ def get_context_from_vector_db(query: str, use_mmr: bool = False) -> str:
     # Create retrievers (using similarity or mmr, as needed)
     retriever_sim = saved_data_store.as_retriever(
         search_type="similarity_score_threshold",
-        search_kwargs={"k": 10, "score_threshold": 0.1}
+        search_kwargs={"k": 10, "score_threshold": 0.4}
     )
     retriever_mmr = saved_data_store.as_retriever(
         search_type="mmr",
@@ -56,4 +55,6 @@ def get_context_from_vector_db(query: str, use_mmr: bool = False) -> str:
     context_docs = retriever.invoke(query)
     # Combine the text from the documents into one context string
     context = "\n".join([doc.page_content for doc in context_docs])
+    print("Retrieved context from vector DB.")
+    print(f"Context: {context}")
     return context

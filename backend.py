@@ -14,7 +14,7 @@ def load_prompt():
     These instructions tell the LLM how to generate the chatbot code.
     """
     try:
-        with open("prompt3.txt", "r") as file:
+        with open("prompt4.txt", "r") as file:
             prompt = file.read()
         return prompt
     except Exception as e:
@@ -48,34 +48,8 @@ def generate_code(user_payload):
         "max_output_tokens": 8192,
         "response_mime_type": "text/plain",
     }
-    
-    # Updated system instruction:
-    # You are tasked with generating Python code for a Streamlit application that serves as a full conversational chatbot.
-    # The generated app must:
-    # - Display a header with st.title('Chatbot Interface').
-    # - Initialize conversation memory (e.g., using st.session_state.messages) with a default greeting.
-    # - Use a chat interface to display conversation history in alternating roles (user and assistant).
-    #   For instance, use st.chat_message('user') and st.chat_message('assistant') if available,
-    #   or use st.write with clear labels.
-    # - Include an input widget (st.chat_input or st.text_input) to capture user queries.
-    # - Update the conversation memory upon each new query and display the full conversation.
-    # - Be modular, well-commented, and follow PEP8 style guidelines.
-    # - Be self-contained so that when saved (e.g., as generated_app.py) and run with
-    #   'streamlit run generated_app.py --server.port=8502', it launches the full chatbot interface.
     system_instruction = (
-        "You are tasked with generating code that implements a full conversational chatbot interface. "
-        "The app should:\n"
-        "  - Display a header using st.title('Chatbot Interface').\n"
-        "  - Initialize conversation memory using st.session_state (for example, st.session_state.messages) with a default welcome message.\n"
-        "  - Display the conversation history in a chat format. If available, use st.chat_message for each message, "
-        "    otherwise use st.write with a clear label (e.g., 'User:' and 'Assistant:').\n"
-        "  - Provide an input widget for the user to enter their query, such as st.chat_input('Your message') or st.text_input('Enter your query').\n"
-        "  - On submission, update the conversation history with the user's message and then display the assistant's response.\n"
-        "  - Ensure that the conversation memory is preserved across interactions and that the full conversation is always visible.\n"
-        "  - The code should be modular, include inline comments explaining each section, adhere to PEP8 guidelines, "
-        "  - The code should talk to google gemini-2.0-flash specfically via API"   
-        "and be self-contained so that it can be executed with 'streamlit run generated_app.py --server.port=8502'.\n"
-        "Avoid unnecessary libraries and keep the code simple and easy to understand."
+        "You are tasked with generating a prompt for an AI chatbot. Give just the prompt, without any additional text."
     )
     
     # Create the model instance using Gemini Flash, including the detailed system instruction.
@@ -100,14 +74,14 @@ def clean_generated_code(code: str) -> str:
     Remove markdown code block delimiters from the generated code.
     """
     # Remove a leading markdown code block if present
-    if code.startswith("```python"):
-        code = code[len("```python"):].strip()
+    if code.startswith("```"):
+        code = code[len("```"):].strip()
     # Remove a trailing markdown code block if present
     if code.endswith("```"):
         code = code[:-3].strip()
     return code
 
-def run_generated_app(generated_code, filename="generated_app.py", port=8502):
+def run_generated_app(generated_code, filename="prompt.txt"):
     """
     Saves the cleaned generated code to a file and launches it as a separate Streamlit app.
     
@@ -130,11 +104,11 @@ def run_generated_app(generated_code, filename="generated_app.py", port=8502):
         return f"Error saving generated code to file: {e}"
     
     # Launch the generated Streamlit app on the specified port.
-    try:
-        subprocess.Popen(["streamlit", "run", filename, f"--server.port={port}"])
-        return f"http://localhost:{port}"
-    except Exception as e:
-        return f"Error launching generated app: {e}"
+    # try:
+    #     subprocess.Popen(["streamlit", "run", filename, f"--server.port={port}"])
+    #     return f"http://localhost:{port}"
+    # except Exception as e:
+    #     return f"Error launching generated app: {e}"
 
 # Example usage:
 # if __name__ == "__main__":

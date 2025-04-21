@@ -42,7 +42,7 @@ generation_config = {
     "max_output_tokens": 8192,
 }
 
-# Create a system instruction based on user preferences
+# Create a system instruction based on user preferences and ensure you prompt it to be concise.
 system_instruction = """
 You are an academic advisor assistant for University of Michigan students specializing in [USER_MAJOR] programs.
 Your name is [APP_NAME] and you're speaking with [USER_NAME] who is set to graduate in [USER_GRADUATION].
@@ -55,7 +55,13 @@ When responding to the student:
 4. Consider University of Michigan's specific academic policies and requirements
 5. If you don't know something, be honest and suggest they speak with a human advisor
 
-Maintain a friendly, helpful tone throughout the conversation.
+Maintain a friendly, helpful tone throughout the conversation. BE CONCISE WITH YOUR RESPONSES!
+
+For tables/lists, use markdown formatting to ensure clarity.
+For example:
+| Course Name | Credits | Grade |
+|-------------|---------|-------|
+| Math 101   | 4       | A     |
 """
 
 # Initialize Gemini model
@@ -198,6 +204,15 @@ if prompt := st.chat_input("Ask a question about your academic journey..."):
          
         # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "content": response.text})
+
+    # Feedback to the chat session
+    selected = st.feedback("thumbs")
+    if selected is not None:
+        sentiment = None
+        if selected == 0:
+            sentiment = "Negative"
+        else:
+            sentiment = "Positive"
        
 
 # Add footer with usage instructions
