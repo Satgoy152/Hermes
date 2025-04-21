@@ -10,7 +10,6 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain.chains import create_history_aware_retriever
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langsmith import Client 
 import streamlit as st
 from retrieval import Retriever
 
@@ -25,9 +24,6 @@ class CounselorBot:
     def __init__(self):
 
         print("Starting Bot -----------------------------------###")
-
-
-        client = Client()
 
         print("Initializing RAG system")
         retriever = Retriever()
